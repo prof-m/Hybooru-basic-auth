@@ -5,15 +5,18 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import morgan from 'morgan';
+import basicAuth from 'express-basic-auth';
 import reactMiddleware from "./middlewares/reactMiddleware";
 import configMiddleware from "./middlewares/configMiddleware";
 import HTTPError from "./helpers/HTTPError";
 import { ErrorPageData } from "./routes/apiTypes";
 import { router } from "./routes";
 import "./helpers/db";
+import auth from "./auth/auth";
 
 const app = express();
 
+app.use(basicAuth({ authorizer: auth, challenge: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
